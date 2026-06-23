@@ -1,0 +1,21 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@custom-variant",
+      "description": "Tailwind CSS directive for defining a custom variant."
+    },
+    {
+      "name": "@source",
+      "description": "Tailwind CSS directive for configuring content source detection."
+    },
+    {
+      "name": "@theme",
+      "description": "Tailwind CSS directive for defining design tokens."
+    },
+    {
+      "name": "@utility",
+      "description": "Tailwind CSS directive for defining custom utilities."
+    }
+  ]
+}

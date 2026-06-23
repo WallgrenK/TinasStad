@@ -1,0 +1,306 @@
+@import 'tailwindcss';
+@source "../src";
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-line: var(--line);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-sans: 'Karla', ui-sans-serif, system-ui, sans-serif;
+  --font-admin: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-admin-bg: #ffffff;
+  --color-admin-surface: oklch(0.98 0.005 250);
+  --color-admin-surface-2: oklch(0.965 0.005 250);
+  --color-admin-border: oklch(0.92 0.005 250);
+  --color-admin-text: oklch(0.22 0.01 250);
+  --color-admin-muted: oklch(0.5 0.01 250);
+  --color-admin-accent: oklch(0.55 0.12 240);
+  --color-admin-accent-soft: oklch(0.96 0.02 240);
+
+  --shadow-soft:
+    0 1px 2px oklch(0 0 0 / 0.04), 0 8px 24px -12px oklch(0 0 0 / 0.08);
+  --shadow-lift:
+    0 2px 6px oklch(0 0 0 / 0.05), 0 24px 48px -24px oklch(0 0 0 / 0.12);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  /* Warm paper backgrounds */
+  --background: oklch(0.985 0.008 80); /* warm off-white */
+  --paper: oklch(0.975 0.012 80); /* slightly deeper warm */
+  --foreground: oklch(0.22 0.015 250); /* charcoal */
+  --ink: oklch(0.18 0.018 250);
+  --ink-soft: oklch(0.38 0.015 250);
+
+  --muted: oklch(0.955 0.01 80);
+  --muted-foreground: oklch(0.48 0.012 250);
+  --line: oklch(0.88 0.008 80);
+
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+
+  /* Muted elegant blue */
+  --primary: oklch(0.38 0.06 245);
+  --primary-foreground: oklch(0.985 0.008 80);
+  --secondary: oklch(0.93 0.018 245);
+  --secondary-foreground: var(--ink);
+  --accent: oklch(0.62 0.08 240);
+  --accent-foreground: oklch(0.985 0.008 80);
+
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.985 0.008 80);
+  --border: oklch(0.9 0.008 80);
+  --input: oklch(0.9 0.008 80);
+  --ring: oklch(0.55 0.06 245);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv11';
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  ::selection {
+    background: oklch(0.85 0.04 240);
+    color: var(--ink);
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 76rem;
+  padding-inline: 1.5rem;
+  @media (min-width: 768px) {
+    padding-inline: 2.5rem;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+@utility lead {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 38em;
+}
+
+@utility hairline {
+  border-top: 1px solid var(--line);
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.6rem;
+  background: var(--ink);
+  color: var(--background);
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+  &:hover {
+    background: var(--primary);
+  }
+}
+
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: transparent;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+  &:hover {
+    border-color: var(--ink);
+    background: var(--muted);
+  }
+}
+
+@utility link-underline {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background: currentColor;
+    transform-origin: right;
+    transform: scaleX(1);
+    transition: transform 0.4s ease;
+  }
+  &:hover::after {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+}
+
+/* ============ Admin scope ============ */
+.admin-scope {
+  font-family: var(--font-admin);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-admin-text);
+  background: var(--color-admin-bg);
+}
+.admin-scope h1,
+.admin-scope h2,
+.admin-scope h3,
+.admin-scope h4 {
+  font-family: var(--font-admin);
+  letter-spacing: -0.01em;
+  color: var(--color-admin-text);
+  font-weight: 600;
+}
+
+@utility admin-card {
+  background: var(--color-admin-bg);
+  border: 1px solid var(--color-admin-border);
+  border-radius: 0.75rem;
+}
+
+@utility admin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.4;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.pill-blue {
+  background: oklch(0.96 0.03 240);
+  color: oklch(0.38 0.12 240);
+  border-color: oklch(0.9 0.04 240);
+}
+.pill-amber {
+  background: oklch(0.97 0.04 80);
+  color: oklch(0.45 0.12 70);
+  border-color: oklch(0.9 0.05 80);
+}
+.pill-violet {
+  background: oklch(0.96 0.03 295);
+  color: oklch(0.42 0.14 295);
+  border-color: oklch(0.9 0.04 295);
+}
+.pill-emerald {
+  background: oklch(0.96 0.04 155);
+  color: oklch(0.42 0.12 155);
+  border-color: oklch(0.9 0.05 155);
+}
+.pill-zinc {
+  background: oklch(0.96 0.003 250);
+  color: oklch(0.42 0.01 250);
+  border-color: oklch(0.9 0.005 250);
+}
+.pill-rose {
+  background: oklch(0.96 0.03 20);
+  color: oklch(0.45 0.14 20);
+  border-color: oklch(0.9 0.04 20);
+}

@@ -1,0 +1,61 @@
+import type { AdminStaff } from './types'
+
+export const staff: AdminStaff[] = [
+  {
+    id: 's_tina',
+    name: 'Tina Karlsson',
+    phone: '+46 70 123 45 67',
+    email: 'tina@tinasstad.se',
+    role: 'Grundare & ägare',
+    color: '#1f4ed8',
+    status: 'active',
+    workingHours: 'Mån–fre · 07:00–16:00',
+    initials: 'TK',
+  },
+  {
+    id: 's_emma',
+    name: 'Emma Andersson',
+    phone: '+46 70 234 56 78',
+    email: 'emma@tinasstad.se',
+    role: 'Teamledare',
+    color: '#0891b2',
+    status: 'active',
+    workingHours: 'Mån–fre · 08:00–16:30',
+    initials: 'EA',
+  },
+  {
+    id: 's_sara',
+    name: 'Sara Nilsson',
+    phone: '+46 70 345 67 89',
+    email: 'sara@tinasstad.se',
+    role: 'Städare',
+    color: '#9333ea',
+    status: 'active',
+    workingHours: 'Tis–lör · 09:00–17:00',
+    initials: 'SN',
+  },
+  {
+    id: 's_maria',
+    name: 'Maria Johansson',
+    phone: '+46 70 456 78 90',
+    email: 'maria@tinasstad.se',
+    role: 'Städare',
+    color: '#059669',
+    status: 'active',
+    workingHours: 'Mån–fre · 07:30–15:00',
+    initials: 'MJ',
+  },
+  {
+    id: 's_lina',
+    name: 'Lina Eriksson',
+    phone: '+46 70 567 89 01',
+    email: 'lina@tinasstad.se',
+    role: 'Städare (deltid)',
+    color: '#d97706',
+    status: 'inactive',
+    workingHours: 'Ons + fre · 08:00–13:00',
+    initials: 'LE',
+  },
+]
+
+export const staffById = (id: string) => staff.find((s) => s.id === id)
