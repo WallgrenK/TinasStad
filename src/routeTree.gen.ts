@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TjansterRouteImport } from './routes/tjanster'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as RutAvdragRouteImport } from './routes/rut-avdrag'
 import { Route as OmOssRouteImport } from './routes/om-oss'
 import { Route as OffertRouteImport } from './routes/offert'
@@ -17,12 +18,26 @@ import { Route as KontaktRouteImport } from './routes/kontakt'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminTimeTrackingRouteImport } from './routes/admin/time-tracking'
+import { Route as AdminTestimonialsRouteImport } from './routes/admin/testimonials'
+import { Route as AdminStaffRouteImport } from './routes/admin/staff'
+import { Route as AdminSettingsRouteImport } from './routes/admin/settings'
+import { Route as AdminServicesRouteImport } from './routes/admin/services'
+import { Route as AdminScheduleRouteImport } from './routes/admin/schedule'
+import { Route as AdminContentRouteImport } from './routes/admin/content'
+import { Route as AdminChecklistsRouteImport } from './routes/admin/checklists'
 import { Route as AdminLeadsIndexRouteImport } from './routes/admin/leads.index'
+import { Route as AdminCustomersIndexRouteImport } from './routes/admin/customers.index'
 import { Route as AdminBookingsIndexRouteImport } from './routes/admin/bookings.index'
 
 const TjansterRoute = TjansterRouteImport.update({
   id: '/tjanster',
   path: '/tjanster',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RutAvdragRoute = RutAvdragRouteImport.update({
@@ -60,9 +75,54 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminTimeTrackingRoute = AdminTimeTrackingRouteImport.update({
+  id: '/time-tracking',
+  path: '/time-tracking',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminStaffRoute = AdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminServicesRoute = AdminServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminScheduleRoute = AdminScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminContentRoute = AdminContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminChecklistsRoute = AdminChecklistsRouteImport.update({
+  id: '/checklists',
+  path: '/checklists',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminLeadsIndexRoute = AdminLeadsIndexRouteImport.update({
   id: '/leads/',
   path: '/leads/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCustomersIndexRoute = AdminCustomersIndexRouteImport.update({
+  id: '/customers/',
+  path: '/customers/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminBookingsIndexRoute = AdminBookingsIndexRouteImport.update({
@@ -78,9 +138,19 @@ export interface FileRoutesByFullPath {
   '/offert': typeof OffertRoute
   '/om-oss': typeof OmOssRoute
   '/rut-avdrag': typeof RutAvdragRoute
+  '/staff': typeof StaffRoute
   '/tjanster': typeof TjansterRoute
+  '/admin/checklists': typeof AdminChecklistsRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/schedule': typeof AdminScheduleRoute
+  '/admin/services': typeof AdminServicesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/staff': typeof AdminStaffRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/time-tracking': typeof AdminTimeTrackingRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/bookings/': typeof AdminBookingsIndexRoute
+  '/admin/customers/': typeof AdminCustomersIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -89,9 +159,19 @@ export interface FileRoutesByTo {
   '/offert': typeof OffertRoute
   '/om-oss': typeof OmOssRoute
   '/rut-avdrag': typeof RutAvdragRoute
+  '/staff': typeof StaffRoute
   '/tjanster': typeof TjansterRoute
+  '/admin/checklists': typeof AdminChecklistsRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/schedule': typeof AdminScheduleRoute
+  '/admin/services': typeof AdminServicesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/staff': typeof AdminStaffRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/time-tracking': typeof AdminTimeTrackingRoute
   '/admin': typeof AdminIndexRoute
   '/admin/bookings': typeof AdminBookingsIndexRoute
+  '/admin/customers': typeof AdminCustomersIndexRoute
   '/admin/leads': typeof AdminLeadsIndexRoute
 }
 export interface FileRoutesById {
@@ -102,9 +182,19 @@ export interface FileRoutesById {
   '/offert': typeof OffertRoute
   '/om-oss': typeof OmOssRoute
   '/rut-avdrag': typeof RutAvdragRoute
+  '/staff': typeof StaffRoute
   '/tjanster': typeof TjansterRoute
+  '/admin/checklists': typeof AdminChecklistsRoute
+  '/admin/content': typeof AdminContentRoute
+  '/admin/schedule': typeof AdminScheduleRoute
+  '/admin/services': typeof AdminServicesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/staff': typeof AdminStaffRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
+  '/admin/time-tracking': typeof AdminTimeTrackingRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/bookings/': typeof AdminBookingsIndexRoute
+  '/admin/customers/': typeof AdminCustomersIndexRoute
   '/admin/leads/': typeof AdminLeadsIndexRoute
 }
 export interface FileRouteTypes {
@@ -116,9 +206,19 @@ export interface FileRouteTypes {
     | '/offert'
     | '/om-oss'
     | '/rut-avdrag'
+    | '/staff'
     | '/tjanster'
+    | '/admin/checklists'
+    | '/admin/content'
+    | '/admin/schedule'
+    | '/admin/services'
+    | '/admin/settings'
+    | '/admin/staff'
+    | '/admin/testimonials'
+    | '/admin/time-tracking'
     | '/admin/'
     | '/admin/bookings/'
+    | '/admin/customers/'
     | '/admin/leads/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -127,9 +227,19 @@ export interface FileRouteTypes {
     | '/offert'
     | '/om-oss'
     | '/rut-avdrag'
+    | '/staff'
     | '/tjanster'
+    | '/admin/checklists'
+    | '/admin/content'
+    | '/admin/schedule'
+    | '/admin/services'
+    | '/admin/settings'
+    | '/admin/staff'
+    | '/admin/testimonials'
+    | '/admin/time-tracking'
     | '/admin'
     | '/admin/bookings'
+    | '/admin/customers'
     | '/admin/leads'
   id:
     | '__root__'
@@ -139,9 +249,19 @@ export interface FileRouteTypes {
     | '/offert'
     | '/om-oss'
     | '/rut-avdrag'
+    | '/staff'
     | '/tjanster'
+    | '/admin/checklists'
+    | '/admin/content'
+    | '/admin/schedule'
+    | '/admin/services'
+    | '/admin/settings'
+    | '/admin/staff'
+    | '/admin/testimonials'
+    | '/admin/time-tracking'
     | '/admin/'
     | '/admin/bookings/'
+    | '/admin/customers/'
     | '/admin/leads/'
   fileRoutesById: FileRoutesById
 }
@@ -152,6 +272,7 @@ export interface RootRouteChildren {
   OffertRoute: typeof OffertRoute
   OmOssRoute: typeof OmOssRoute
   RutAvdragRoute: typeof RutAvdragRoute
+  StaffRoute: typeof StaffRoute
   TjansterRoute: typeof TjansterRoute
 }
 
@@ -162,6 +283,13 @@ declare module '@tanstack/react-router' {
       path: '/tjanster'
       fullPath: '/tjanster'
       preLoaderRoute: typeof TjansterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rut-avdrag': {
@@ -213,11 +341,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/time-tracking': {
+      id: '/admin/time-tracking'
+      path: '/time-tracking'
+      fullPath: '/admin/time-tracking'
+      preLoaderRoute: typeof AdminTimeTrackingRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/testimonials': {
+      id: '/admin/testimonials'
+      path: '/testimonials'
+      fullPath: '/admin/testimonials'
+      preLoaderRoute: typeof AdminTestimonialsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/staff': {
+      id: '/admin/staff'
+      path: '/staff'
+      fullPath: '/admin/staff'
+      preLoaderRoute: typeof AdminStaffRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/services': {
+      id: '/admin/services'
+      path: '/services'
+      fullPath: '/admin/services'
+      preLoaderRoute: typeof AdminServicesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/schedule': {
+      id: '/admin/schedule'
+      path: '/schedule'
+      fullPath: '/admin/schedule'
+      preLoaderRoute: typeof AdminScheduleRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/content': {
+      id: '/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AdminContentRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/checklists': {
+      id: '/admin/checklists'
+      path: '/checklists'
+      fullPath: '/admin/checklists'
+      preLoaderRoute: typeof AdminChecklistsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/leads/': {
       id: '/admin/leads/'
       path: '/leads'
       fullPath: '/admin/leads/'
       preLoaderRoute: typeof AdminLeadsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/customers/': {
+      id: '/admin/customers/'
+      path: '/customers'
+      fullPath: '/admin/customers/'
+      preLoaderRoute: typeof AdminCustomersIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/bookings/': {
@@ -231,14 +422,32 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteRouteChildren {
+  AdminChecklistsRoute: typeof AdminChecklistsRoute
+  AdminContentRoute: typeof AdminContentRoute
+  AdminScheduleRoute: typeof AdminScheduleRoute
+  AdminServicesRoute: typeof AdminServicesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminStaffRoute: typeof AdminStaffRoute
+  AdminTestimonialsRoute: typeof AdminTestimonialsRoute
+  AdminTimeTrackingRoute: typeof AdminTimeTrackingRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminBookingsIndexRoute: typeof AdminBookingsIndexRoute
+  AdminCustomersIndexRoute: typeof AdminCustomersIndexRoute
   AdminLeadsIndexRoute: typeof AdminLeadsIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminChecklistsRoute: AdminChecklistsRoute,
+  AdminContentRoute: AdminContentRoute,
+  AdminScheduleRoute: AdminScheduleRoute,
+  AdminServicesRoute: AdminServicesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminStaffRoute: AdminStaffRoute,
+  AdminTestimonialsRoute: AdminTestimonialsRoute,
+  AdminTimeTrackingRoute: AdminTimeTrackingRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminBookingsIndexRoute: AdminBookingsIndexRoute,
+  AdminCustomersIndexRoute: AdminCustomersIndexRoute,
   AdminLeadsIndexRoute: AdminLeadsIndexRoute,
 }
 
@@ -253,6 +462,7 @@ const rootRouteChildren: RootRouteChildren = {
   OffertRoute: OffertRoute,
   OmOssRoute: OmOssRoute,
   RutAvdragRoute: RutAvdragRoute,
+  StaffRoute: StaffRoute,
   TjansterRoute: TjansterRoute,
 }
 export const routeTree = rootRouteImport
