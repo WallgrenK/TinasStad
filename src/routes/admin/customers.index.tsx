@@ -12,27 +12,60 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-import { customers } from "@/lib/admin/mock/customers";
 import { bookings } from "@/lib/admin/mock/bookings";
 import { leads } from "@/lib/admin/mock/leads";
 import { formatSv, formatTime, relativeSv } from "@/lib/admin/format";
 import type { Customer } from "@/lib/admin/mock/types";
+import { supabase } from "#/lib/utils";
 
 export const Route = createFileRoute("/admin/customers/")({
-  head: () => ({ meta: [{ title: "Kunder · Admin · Tinas Städ" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      { title: "Kunder · Admin · Tinas Städ" },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
+  loader: async () => {
+    // TODO: Fetch booking aggregates and linked leads here so totalBookings, lastBookingAt, and linkedLeadIds are real.
+    const { data, error } = await supabase
+      .from("customers")
+      .select("id, name, email, phone, address, notes, created_at")
+      .is("deleted_at", null)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return data.map((customer) => ({
+      id: customer.id,
+      name: customer.name,
+      email: customer.email ?? "",
+      phone: customer.phone ?? "",
+      address: customer.address ?? "",
+      city: "",
+      internalNotes: customer.notes ?? "",
+      totalBookings: 0,
+      lastBookingAt: undefined,
+      linkedLeadIds: [],
+      createdAt: customer.created_at,
+    }));
+  },
   component: CustomersPage,
 });
+
+
 
 function CustomersPage() {
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [notes, setNotes] = useState<Record<string, string>>({});
+  const customers = Route.useLoaderData();
+  console.log(customers);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return customers;
-    return customers.filter(
+    return customers?.filter(
       (c) =>
         c.name.toLowerCase().includes(q) ||
         c.email.toLowerCase().includes(q) ||
@@ -41,7 +74,7 @@ function CustomersPage() {
     );
   }, [query]);
 
-  const open: Customer | null = openId ? customers.find((c) => c.id === openId) ?? null : null;
+  const open: Customer | null = openId ? customers?.find((c) => c.id === openId) ?? null : null;
   const openBookings = open ? bookings.filter((b) => b.customerId === open.id).sort((a, b) => b.startAt.localeCompare(a.startAt)) : [];
   const openLeads = open ? leads.filter((l) => open.linkedLeadIds.includes(l.id)) : [];
 
@@ -71,7 +104,7 @@ function CustomersPage() {
       </div>
 
       <div className="admin-card overflow-hidden">
-        {filtered.length === 0 ? (
+        {filtered?.length === 0 ? (
           <EmptyState title="Inga kunder matchar" />
         ) : (
           <Table>
@@ -86,7 +119,7 @@ function CustomersPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.map((c) => (
+              {filtered?.map((c) => (
                 <TableRow
                   key={c.id}
                   tabIndex={0}
@@ -172,6 +205,7 @@ function CustomersPage() {
                     onChange={(e) => setNotes((n) => ({ ...n, [open.id]: e.target.value }))}
                   />
                   <button
+                    // TODO: Persist notes to public.customers.notes instead of only updating local component state.
                     onClick={() => toast.success("Anteckningar sparade (lokalt)")}
                     className="mt-2 inline-flex h-8 items-center rounded-md bg-[var(--color-admin-text)] px-3 text-xs font-medium text-white"
                   >

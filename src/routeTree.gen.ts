@@ -18,12 +18,14 @@ import { Route as KontaktRouteImport } from './routes/kontakt'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as StaffLoginRouteImport } from './routes/staff.login'
 import { Route as AdminTimeTrackingRouteImport } from './routes/admin/time-tracking'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin/testimonials'
 import { Route as AdminStaffRouteImport } from './routes/admin/staff'
 import { Route as AdminSettingsRouteImport } from './routes/admin/settings'
 import { Route as AdminServicesRouteImport } from './routes/admin/services'
 import { Route as AdminScheduleRouteImport } from './routes/admin/schedule'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminContentRouteImport } from './routes/admin/content'
 import { Route as AdminChecklistsRouteImport } from './routes/admin/checklists'
 import { Route as AdminLeadsIndexRouteImport } from './routes/admin/leads.index'
@@ -75,6 +77,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const StaffLoginRoute = StaffLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => StaffRoute,
+} as any)
 const AdminTimeTrackingRoute = AdminTimeTrackingRouteImport.update({
   id: '/time-tracking',
   path: '/time-tracking',
@@ -103,6 +110,11 @@ const AdminServicesRoute = AdminServicesRouteImport.update({
 const AdminScheduleRoute = AdminScheduleRouteImport.update({
   id: '/schedule',
   path: '/schedule',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminContentRoute = AdminContentRouteImport.update({
@@ -138,16 +150,18 @@ export interface FileRoutesByFullPath {
   '/offert': typeof OffertRoute
   '/om-oss': typeof OmOssRoute
   '/rut-avdrag': typeof RutAvdragRoute
-  '/staff': typeof StaffRoute
+  '/staff': typeof StaffRouteWithChildren
   '/tjanster': typeof TjansterRoute
   '/admin/checklists': typeof AdminChecklistsRoute
   '/admin/content': typeof AdminContentRoute
+  '/admin/login': typeof AdminLoginRoute
   '/admin/schedule': typeof AdminScheduleRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/time-tracking': typeof AdminTimeTrackingRoute
+  '/staff/login': typeof StaffLoginRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/bookings/': typeof AdminBookingsIndexRoute
   '/admin/customers/': typeof AdminCustomersIndexRoute
@@ -159,16 +173,18 @@ export interface FileRoutesByTo {
   '/offert': typeof OffertRoute
   '/om-oss': typeof OmOssRoute
   '/rut-avdrag': typeof RutAvdragRoute
-  '/staff': typeof StaffRoute
+  '/staff': typeof StaffRouteWithChildren
   '/tjanster': typeof TjansterRoute
   '/admin/checklists': typeof AdminChecklistsRoute
   '/admin/content': typeof AdminContentRoute
+  '/admin/login': typeof AdminLoginRoute
   '/admin/schedule': typeof AdminScheduleRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/time-tracking': typeof AdminTimeTrackingRoute
+  '/staff/login': typeof StaffLoginRoute
   '/admin': typeof AdminIndexRoute
   '/admin/bookings': typeof AdminBookingsIndexRoute
   '/admin/customers': typeof AdminCustomersIndexRoute
@@ -182,16 +198,18 @@ export interface FileRoutesById {
   '/offert': typeof OffertRoute
   '/om-oss': typeof OmOssRoute
   '/rut-avdrag': typeof RutAvdragRoute
-  '/staff': typeof StaffRoute
+  '/staff': typeof StaffRouteWithChildren
   '/tjanster': typeof TjansterRoute
   '/admin/checklists': typeof AdminChecklistsRoute
   '/admin/content': typeof AdminContentRoute
+  '/admin/login': typeof AdminLoginRoute
   '/admin/schedule': typeof AdminScheduleRoute
   '/admin/services': typeof AdminServicesRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/staff': typeof AdminStaffRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/time-tracking': typeof AdminTimeTrackingRoute
+  '/staff/login': typeof StaffLoginRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/bookings/': typeof AdminBookingsIndexRoute
   '/admin/customers/': typeof AdminCustomersIndexRoute
@@ -210,12 +228,14 @@ export interface FileRouteTypes {
     | '/tjanster'
     | '/admin/checklists'
     | '/admin/content'
+    | '/admin/login'
     | '/admin/schedule'
     | '/admin/services'
     | '/admin/settings'
     | '/admin/staff'
     | '/admin/testimonials'
     | '/admin/time-tracking'
+    | '/staff/login'
     | '/admin/'
     | '/admin/bookings/'
     | '/admin/customers/'
@@ -231,12 +251,14 @@ export interface FileRouteTypes {
     | '/tjanster'
     | '/admin/checklists'
     | '/admin/content'
+    | '/admin/login'
     | '/admin/schedule'
     | '/admin/services'
     | '/admin/settings'
     | '/admin/staff'
     | '/admin/testimonials'
     | '/admin/time-tracking'
+    | '/staff/login'
     | '/admin'
     | '/admin/bookings'
     | '/admin/customers'
@@ -253,12 +275,14 @@ export interface FileRouteTypes {
     | '/tjanster'
     | '/admin/checklists'
     | '/admin/content'
+    | '/admin/login'
     | '/admin/schedule'
     | '/admin/services'
     | '/admin/settings'
     | '/admin/staff'
     | '/admin/testimonials'
     | '/admin/time-tracking'
+    | '/staff/login'
     | '/admin/'
     | '/admin/bookings/'
     | '/admin/customers/'
@@ -272,7 +296,7 @@ export interface RootRouteChildren {
   OffertRoute: typeof OffertRoute
   OmOssRoute: typeof OmOssRoute
   RutAvdragRoute: typeof RutAvdragRoute
-  StaffRoute: typeof StaffRoute
+  StaffRoute: typeof StaffRouteWithChildren
   TjansterRoute: typeof TjansterRoute
 }
 
@@ -341,6 +365,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/staff/login': {
+      id: '/staff/login'
+      path: '/login'
+      fullPath: '/staff/login'
+      preLoaderRoute: typeof StaffLoginRouteImport
+      parentRoute: typeof StaffRoute
+    }
     '/admin/time-tracking': {
       id: '/admin/time-tracking'
       path: '/time-tracking'
@@ -381,6 +412,13 @@ declare module '@tanstack/react-router' {
       path: '/schedule'
       fullPath: '/admin/schedule'
       preLoaderRoute: typeof AdminScheduleRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/admin/content': {
@@ -424,6 +462,7 @@ declare module '@tanstack/react-router' {
 interface AdminRouteRouteChildren {
   AdminChecklistsRoute: typeof AdminChecklistsRoute
   AdminContentRoute: typeof AdminContentRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   AdminScheduleRoute: typeof AdminScheduleRoute
   AdminServicesRoute: typeof AdminServicesRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
@@ -439,6 +478,7 @@ interface AdminRouteRouteChildren {
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminChecklistsRoute: AdminChecklistsRoute,
   AdminContentRoute: AdminContentRoute,
+  AdminLoginRoute: AdminLoginRoute,
   AdminScheduleRoute: AdminScheduleRoute,
   AdminServicesRoute: AdminServicesRoute,
   AdminSettingsRoute: AdminSettingsRoute,
@@ -455,6 +495,16 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
   AdminRouteRouteChildren,
 )
 
+interface StaffRouteChildren {
+  StaffLoginRoute: typeof StaffLoginRoute
+}
+
+const StaffRouteChildren: StaffRouteChildren = {
+  StaffLoginRoute: StaffLoginRoute,
+}
+
+const StaffRouteWithChildren = StaffRoute._addFileChildren(StaffRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
@@ -462,7 +512,7 @@ const rootRouteChildren: RootRouteChildren = {
   OffertRoute: OffertRoute,
   OmOssRoute: OmOssRoute,
   RutAvdragRoute: RutAvdragRoute,
-  StaffRoute: StaffRoute,
+  StaffRoute: StaffRouteWithChildren,
   TjansterRoute: TjansterRoute,
 }
 export const routeTree = rootRouteImport

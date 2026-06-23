@@ -21,6 +21,7 @@ export const Route = createFileRoute("/admin/")({
 
 function DashboardPage() {
   const [openAction, setOpenAction] = useState<string | null>(null);
+  // TODO: Replace dashboard mock modules with Supabase-backed loaders once customers, leads, bookings, and activity have stable queries.
   const today = new Date();
   const todaysBookings = bookings
     .filter((b) => isSameDay(new Date(b.startAt), today))

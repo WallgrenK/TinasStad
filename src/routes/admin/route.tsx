@@ -3,6 +3,7 @@ import {
   Outlet,
   useRouterState,
   Link,
+  redirect,
 } from '@tanstack/react-router'
 import {
   ChevronRight,
@@ -23,8 +24,39 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Toaster } from '@/components/ui/sonner'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
+import { supabase } from '#/lib/utils'
+import { useCurrentUser } from '@/hooks/useCurrentUser'
 
 export const Route = createFileRoute('/admin')({
+  beforeLoad: async ({ location }) => {
+    if (location.pathname === '/admin/login') {
+      return
+    }
+
+    const { data: { user },} = await supabase.auth.getUser();
+
+    if(!user) {
+      throw redirect({
+        to: "/admin/login",
+      })
+    }
+
+    // TODO: Move this role check into a shared auth helper so route guards and UI state cannot drift apart.
+    const { data: roles, error} = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id);
+
+    if (error) {
+      throw redirect({ to: "/admin/login"});
+    }
+
+    const isAllowed = roles?.some((r) => r.role === "admin" || r.role === "manager");
+
+    if (!isAllowed) {
+      throw redirect({ to: "/admin/login"});
+    }
+  },
   head: () => ({
     meta: [
       { title: 'Admin · Tinas Städ' },
@@ -52,6 +84,12 @@ const titles: Record<string, string> = {
 function AdminLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const current = titles[pathname] ?? 'Admin'
+  const { profile, role, loading } = useCurrentUser()
+  const initials = profile?.full_name?.split(' ').map((n) => n[0]).join('').slice(0,2).toUpperCase() ?? 'U';
+  const displayRole = loading ? 'Laddar...' : role ?? 'Admin'
+    if (pathname === "/admin/login") {
+    return <Outlet />;
+  }
 
   return (
     <div className="admin-scope min-h-screen">
@@ -70,7 +108,7 @@ function AdminLayout() {
                     to="/admin"
                     className="hover:text-[var(--color-admin-text)]"
                   >
-                    Admin
+                    {displayRole}
                   </Link>
                   <ChevronRight className="h-3.5 w-3.5" />
                   <span className="font-medium text-[var(--color-admin-text)]">
@@ -90,16 +128,16 @@ function AdminLayout() {
                   <DropdownMenuTrigger className="flex items-center gap-2 rounded-full border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] py-1 pl-1 pr-3 text-sm transition-colors hover:bg-[var(--color-admin-surface)]">
                     <Avatar className="h-7 w-7">
                       <AvatarFallback className="bg-[var(--color-admin-text)] text-[11px] text-white">
-                        TK
+                        {initials}
                       </AvatarFallback>
                     </Avatar>
                     <span className="hidden font-medium text-[var(--color-admin-text)] sm:inline">
-                      Tina Karlsson
+                      {profile?.full_name ?? "Laddar..."}
                     </span>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel className="text-xs text-[var(--color-admin-muted)]">
-                      tina@tinasstad.se
+                      {profile?.email ?? ''}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
@@ -111,6 +149,7 @@ function AdminLayout() {
                       Inställningar
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
+                    {/* TODO: Wire this to supabase.auth.signOut() and invalidate protected route data after logout. */}
                     <DropdownMenuItem className="text-rose-600">
                       <LogOut className="mr-2 h-4 w-4" />
                       Logga ut

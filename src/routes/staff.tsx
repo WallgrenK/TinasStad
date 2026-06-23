@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Phone, MapPin, ChevronRight, CalendarDays, Timer as TimerIcon, User, Home, ClipboardList, CheckCircle2 } from "lucide-react";
 
@@ -31,10 +31,20 @@ export const Route = createFileRoute("/staff")({
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
     ],
   }),
-  component: StaffMobilePage,
+  component: StaffRouteShell,
 });
 
 const ME_ID = "s_emma";
+
+function StaffRouteShell() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  if (pathname === "/staff/login") {
+    return <Outlet />;
+  }
+
+  return <StaffMobilePage />;
+}
 
 function StaffMobilePage() {
   const me = staffById(ME_ID)!;
