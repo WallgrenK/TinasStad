@@ -165,7 +165,7 @@ function LeadsPage() {
         actions={
           <button
             onClick={() => setCreateOpen(true)}
-            className="inline-flex h-9 items-center gap-1.5 rounded-md bg-[var(--color-admin-text)] px-3 text-sm font-medium text-white transition-colors hover:bg-[var(--color-admin-accent)]"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md bg-(--color-admin-text) px-3 text-sm font-medium text-white transition-colors hover:bg-(--color-admin-accent)"
           >
             <Plus className="h-4 w-4" /> Ny lead
           </button>
@@ -186,7 +186,7 @@ function LeadsPage() {
           value={statusFilter}
           onValueChange={(v) => setStatusFilter(v as 'all' | LeadStatus)}
         >
-          <SelectTrigger className="h-9 w-[170px]">
+          <SelectTrigger className="h-9 w-42.5">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -199,7 +199,7 @@ function LeadsPage() {
           </SelectContent>
         </Select>
         <Select value={sort} onValueChange={(v) => setSort(v as typeof sort)}>
-          <SelectTrigger className="h-9 w-[160px]">
+          <SelectTrigger className="h-9 w-40">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -249,9 +249,9 @@ function LeadsPage() {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') setOpenId(l.id)
                   }}
-                  className="cursor-pointer border-[var(--color-admin-border)] outline-none transition-colors hover:bg-[var(--color-admin-surface)] focus:bg-[var(--color-admin-surface)]"
+                  className="cursor-pointer border-(--color-admin-border) outline-none transition-colors hover:bg-(--color-admin-surface) focus:bg-(--color-admin-surface)"
                 >
-                  <TableCell className="py-3 font-medium text-[var(--color-admin-text)]">
+                  <TableCell className="py-3 font-medium text-(--color-admin-text)">
                     {l.name}
                   </TableCell>
                   <TableCell className="py-3 text-[13px] text-var(--color-admin-muted)">
@@ -332,7 +332,7 @@ function LeadsPage() {
                       </span>{' '}
                       {open.propertySize}
                     </div>
-                    <div className="rounded-lg border border-(--color-admin-border) bg-[var(--color-admin-surface)] p-3 italic text-[var(--color-admin-text)]">
+                    <div className="rounded-lg border border-(--color-admin-border) bg-(--color-admin-surface) p-3 italic text-(--color-admin-text)">
                       "{open.message}"
                     </div>
                   </div>
@@ -376,9 +376,9 @@ function LeadsPage() {
                     {open.notes.map((n) => (
                       <div
                         key={n.id}
-                        className="rounded-lg border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] p-3"
+                        className="rounded-lg border border-(--color-admin-border) bg-(--color-admin-bg) p-3"
                       >
-                        <div className="text-sm text-[var(--color-admin-text)]">
+                        <div className="text-sm text-(--color-admin-text)">
                           {n.body}
                         </div>
                         <div className="mt-1 text-xs text-var(--color-admin-muted)">
@@ -397,7 +397,7 @@ function LeadsPage() {
                     <button
                       onClick={() => addNote(open.id)}
                       disabled={!draftNote.trim()}
-                      className="inline-flex h-8 items-center rounded-md bg-[var(--color-admin-text)] px-3 text-xs font-medium text-white disabled:opacity-40"
+                      className="inline-flex h-8 items-center rounded-md bg-(--color-admin-text) px-3 text-xs font-medium text-white disabled:opacity-40"
                     >
                       Spara anteckning
                     </button>

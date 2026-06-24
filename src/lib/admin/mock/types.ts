@@ -131,5 +131,7 @@ export interface ChecklistTemplate {
   id: string
   service: ServiceName
   title: string
-  items: string[]
+  items: {
+    label: string
+  }[]
 }

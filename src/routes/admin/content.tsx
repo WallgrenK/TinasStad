@@ -1,74 +1,98 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { Search, FileText, ExternalLink } from "lucide-react";
-import { toast } from "sonner";
+import { createFileRoute } from '@tanstack/react-router'
+import { useMemo, useState } from 'react'
+import { Search, FileText, ExternalLink } from 'lucide-react'
+import { toast } from 'sonner'
 
-import { PageHeader } from "@/components/admin/PageHeader";
-import { EmptyState } from "@/components/admin/EmptyState";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { PageHeader } from '@/components/admin/PageHeader'
+import { EmptyState } from '@/components/admin/EmptyState'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
 
-import { adminContentSections, type ContentSection, type ContentField } from "@/lib/admin/mock/content";
-import { relativeSv } from "@/lib/admin/format";
+import {
+  adminContentSections,
+  type ContentSection,
+  type ContentField,
+} from '@/lib/admin/mock/content'
+import { relativeSv } from '@/lib/admin/format'
 
-export const Route = createFileRoute("/admin/content")({
-  head: () => ({ meta: [{ title: "Innehåll · Admin · Tinas Städ" }, { name: "robots", content: "noindex" }] }),
+export const Route = createFileRoute('/admin/content')({
+  head: () => ({
+    meta: [
+      { title: 'Innehåll · Admin · Tinas Städ' },
+      { name: 'robots', content: 'noindex' },
+    ],
+  }),
   component: ContentPage,
-});
+})
 
 function ContentPage() {
-  const [sections, setSections] = useState<ContentSection[]>(adminContentSections);
-  const [query, setQuery] = useState("");
-  const [activeId, setActiveId] = useState<string>(adminContentSections[0]?.id ?? "");
-  const [dirty, setDirty] = useState<Record<string, boolean>>({});
+  const [sections, setSections] =
+    useState<ContentSection[]>(adminContentSections)
+  const [query, setQuery] = useState('')
+  const [activeId, setActiveId] = useState<string>(
+    adminContentSections[0]?.id ?? '',
+  )
+  const [dirty, setDirty] = useState<Record<string, boolean>>({})
 
   const pages = useMemo(() => {
-    const order: string[] = [];
-    const grouped = new Map<string, ContentSection[]>();
+    const order: string[] = []
+    const grouped = new Map<string, ContentSection[]>()
     sections.forEach((s) => {
       if (!grouped.has(s.page)) {
-        grouped.set(s.page, []);
-        order.push(s.page);
+        grouped.set(s.page, [])
+        order.push(s.page)
       }
-      grouped.get(s.page)!.push(s);
-    });
+      grouped.get(s.page)!.push(s)
+    })
     return order.map((p) => ({
       page: p,
       items: grouped.get(p)!.filter((s) => {
-        const q = query.trim().toLowerCase();
-        if (!q) return true;
-        return s.section.toLowerCase().includes(q) || s.page.toLowerCase().includes(q);
+        const q = query.trim().toLowerCase()
+        if (!q) return true
+        return (
+          s.section.toLowerCase().includes(q) ||
+          s.page.toLowerCase().includes(q)
+        )
       }),
-    }));
-  }, [sections, query]);
+    }))
+  }, [sections, query])
 
-  const active = sections.find((s) => s.id === activeId) ?? null;
+  const active = sections.find((s) => s.id === activeId) ?? null
 
   const updateField = (sectionId: string, fieldKey: string, value: string) => {
     setSections((prev) =>
       prev.map((s) =>
         s.id === sectionId
-          ? { ...s, fields: s.fields.map((f) => (f.key === fieldKey ? { ...f, value } : f)) }
+          ? {
+              ...s,
+              fields: s.fields.map((f) =>
+                f.key === fieldKey ? { ...f, value } : f,
+              ),
+            }
           : s,
       ),
-    );
-    setDirty((d) => ({ ...d, [sectionId]: true }));
-  };
+    )
+    setDirty((d) => ({ ...d, [sectionId]: true }))
+  }
 
   const save = (sectionId: string) => {
-    setSections((prev) => prev.map((s) => (s.id === sectionId ? { ...s, updatedAt: new Date().toISOString() } : s)));
-    setDirty((d) => ({ ...d, [sectionId]: false }));
-    toast.success("Innehåll publicerat");
-  };
+    setSections((prev) =>
+      prev.map((s) =>
+        s.id === sectionId ? { ...s, updatedAt: new Date().toISOString() } : s,
+      ),
+    )
+    setDirty((d) => ({ ...d, [sectionId]: false }))
+    toast.success('Innehåll publicerat')
+  }
 
   const discard = (sectionId: string) => {
-    const original = adminContentSections.find((s) => s.id === sectionId);
-    if (!original) return;
-    setSections((prev) => prev.map((s) => (s.id === sectionId ? original : s)));
-    setDirty((d) => ({ ...d, [sectionId]: false }));
-    toast("Ändringar ångrade");
-  };
+    const original = adminContentSections.find((s) => s.id === sectionId)
+    if (!original) return
+    setSections((prev) => prev.map((s) => (s.id === sectionId ? original : s)))
+    setDirty((d) => ({ ...d, [sectionId]: false }))
+    toast('Ändringar ångrade')
+  }
 
   return (
     <div>
@@ -82,7 +106,12 @@ function ContentPage() {
           <div className="border-b border-[var(--color-admin-border)] p-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-admin-muted)]" />
-              <Input placeholder="Sök sektion…" value={query} onChange={(e) => setQuery(e.target.value)} className="h-9 pl-9" />
+              <Input
+                placeholder="Sök sektion…"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="h-9 pl-9"
+              />
             </div>
           </div>
           <nav className="max-h-[640px] overflow-y-auto p-2">
@@ -94,15 +123,15 @@ function ContentPage() {
                   </div>
                   <ul>
                     {items.map((s) => {
-                      const isActive = s.id === activeId;
+                      const isActive = s.id === activeId
                       return (
                         <li key={s.id}>
                           <button
                             onClick={() => setActiveId(s.id)}
                             className={`flex w-full items-start gap-2 rounded-md px-2 py-2 text-left text-[13px] transition ${
                               isActive
-                                ? "bg-[var(--color-admin-accent-soft)] text-[var(--color-admin-accent)]"
-                                : "text-[var(--color-admin-text)] hover:bg-[var(--color-admin-surface)]"
+                                ? 'bg-[var(--color-admin-accent-soft)] text-[var(--color-admin-accent)]'
+                                : 'text-[var(--color-admin-text)] hover:bg-[var(--color-admin-surface)]'
                             }`}
                           >
                             <FileText className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-70" />
@@ -115,14 +144,16 @@ function ContentPage() {
                             )}
                           </button>
                         </li>
-                      );
+                      )
                     })}
                   </ul>
                 </div>
               ),
             )}
             {pages.every((p) => p.items.length === 0) && (
-              <div className="px-2 py-6 text-center text-[12px] text-[var(--color-admin-muted)]">Inga sektioner matchar</div>
+              <div className="px-2 py-6 text-center text-[12px] text-[var(--color-admin-muted)]">
+                Inga sektioner matchar
+              </div>
             )}
           </nav>
         </aside>
@@ -138,11 +169,15 @@ function ContentPage() {
                   <h2 className="mt-1 text-xl font-semibold tracking-tight text-[var(--color-admin-text)]">
                     {active.section}
                   </h2>
-                  <p className="mt-1 text-sm text-[var(--color-admin-muted)]">{active.description}</p>
+                  <p className="mt-1 text-sm text-[var(--color-admin-muted)]">
+                    {active.description}
+                  </p>
                 </div>
                 <div className="text-right text-[12px] text-[var(--color-admin-muted)]">
                   <div>Senast uppdaterad</div>
-                  <div className="text-[var(--color-admin-text)]">{relativeSv(active.updatedAt)}</div>
+                  <div className="text-[var(--color-admin-text)]">
+                    {relativeSv(active.updatedAt)}
+                  </div>
                 </div>
               </header>
 
@@ -163,11 +198,14 @@ function ContentPage() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--color-admin-muted)] hover:text-[var(--color-admin-text)]"
                 >
-                  <ExternalLink className="h-3.5 w-3.5" /> Förhandsgranska på webbplatsen
+                  <ExternalLink className="h-3.5 w-3.5" /> Förhandsgranska på
+                  webbplatsen
                 </a>
                 <div className="flex items-center gap-2">
                   {dirty[active.id] && (
-                    <span className="text-[12px] text-amber-700">Osparade ändringar</span>
+                    <span className="text-[12px] text-amber-700">
+                      Osparade ändringar
+                    </span>
                   )}
                   <button
                     onClick={() => discard(active.id)}
@@ -188,24 +226,39 @@ function ContentPage() {
             </div>
           ) : (
             <div className="admin-card">
-              <EmptyState title="Välj en sektion" description="Välj en sektion till vänster för att redigera innehållet." />
+              <EmptyState
+                title="Välj en sektion"
+                description="Välj en sektion till vänster för att redigera innehållet."
+              />
             </div>
           )}
         </section>
       </div>
     </div>
-  );
+  )
 }
 
-function FieldEditor({ field, onChange }: { field: ContentField; onChange: (v: string) => void }) {
-  const counter = field.maxLength ? `${field.value.length} / ${field.maxLength}` : `${field.value.length} tecken`;
+function FieldEditor({
+  field,
+  onChange,
+}: {
+  field: ContentField
+  onChange: (v: string) => void
+}) {
+  const counter = field.maxLength
+    ? `${field.value.length} / ${field.maxLength}`
+    : `${field.value.length} tecken`
   return (
     <div>
       <div className="mb-1.5 flex items-baseline justify-between">
-        <Label className="text-[12px] font-medium text-[var(--color-admin-text)]">{field.label}</Label>
-        <span className="text-[11px] tabular-nums text-[var(--color-admin-muted)]">{counter}</span>
+        <Label className="text-[12px] font-medium text-[var(--color-admin-text)]">
+          {field.label}
+        </Label>
+        <span className="text-[11px] tabular-nums text-[var(--color-admin-muted)]">
+          {counter}
+        </span>
       </div>
-      {field.type === "textarea" ? (
+      {field.type === 'textarea' ? (
         <Textarea
           rows={3}
           value={field.value}
@@ -220,7 +273,11 @@ function FieldEditor({ field, onChange }: { field: ContentField; onChange: (v: s
           onChange={(e) => onChange(e.target.value)}
         />
       )}
-      {field.helper && <div className="mt-1 text-[11px] text-[var(--color-admin-muted)]">{field.helper}</div>}
+      {field.helper && (
+        <div className="mt-1 text-[11px] text-[var(--color-admin-muted)]">
+          {field.helper}
+        </div>
+      )}
     </div>
-  );
+  )
 }

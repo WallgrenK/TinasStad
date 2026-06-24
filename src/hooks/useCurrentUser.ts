@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '#/lib/utils'
 import type { User } from '@supabase/supabase-js'
+import { canAccessAdmin, getUserRoles, type UserRole } from '@/lib/auth'
 
 type Profile = {
   id: string
@@ -8,8 +9,6 @@ type Profile = {
   email: string | null
   phone: string | null
 }
-
-type UserRole = 'admin' | 'manager' | 'staff'
 
 export function useCurrentUser() {
   const [user, setUser] = useState<User | null>(null)
@@ -35,27 +34,19 @@ export function useCurrentUser() {
           return
         }
 
-        // TODO: Share this profile/role lookup with the admin route guard and surface errors instead of silently falling back to null.
-        const [{ data: profileData }, { data: roleData }] =
-          await Promise.all([
-            supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', user.id)
-              .single(),
-
-            supabase
-              .from('user_roles')
-              .select('role')
-              .eq('user_id', user.id)
-              .limit(1)
-              .single(),
-          ])
+        const [{ data: profileData }, { data: roleData }] = await Promise.all([
+          supabase.from('profiles').select('*').eq('id', user.id).single(),
+          getUserRoles(user.id),
+        ])
 
         if (!mounted) return
 
         setProfile(profileData)
-        setRole(roleData?.role ?? null)
+        setRole(
+          roleData?.find((role) => canAccessAdmin(role.role))?.role ??
+            roleData?.[0]?.role ??
+            null,
+        )
       } finally {
         if (mounted) {
           setLoading(false)
@@ -85,7 +76,6 @@ export function useCurrentUser() {
     isAdmin: role === 'admin',
     isManager: role === 'manager',
     isStaff: role === 'staff',
-    isAdminOrManager:
-      role === 'admin' || role === 'manager',
+    isAdminOrManager: canAccessAdmin(role),
   }
 }

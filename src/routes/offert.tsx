@@ -1,41 +1,53 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { PageShell, PageHeader } from "@/components/site/PageShell";
+import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
+import { PageShell, PageHeader } from '@/components/site/PageShell'
 
-export const Route = createFileRoute("/offert")({
+export const Route = createFileRoute('/offert')({
   head: () => ({
     meta: [
-      { title: "Begär offert — Städning i Åtvidaberg | Tinas Städ" },
-      { name: "description", content: "Begär kostnadsfri offert på hemstädning, flyttstädning eller fönsterputs i Åtvidaberg. Vi återkommer samma dag med fast pris efter RUT." },
-      { property: "og:title", content: "Begär offert — Tinas Städ" },
-      { property: "og:description", content: "Kostnadsfri offert med fast pris efter RUT." },
-      { property: "og:url", content: "/offert" },
+      { title: 'Begär offert — Städning i Åtvidaberg | Tinas Städ' },
+      {
+        name: 'description',
+        content:
+          'Begär kostnadsfri offert på hemstädning, flyttstädning eller fönsterputs i Åtvidaberg. Vi återkommer samma dag med fast pris efter RUT.',
+      },
+      { property: 'og:title', content: 'Begär offert — Tinas Städ' },
+      {
+        property: 'og:description',
+        content: 'Kostnadsfri offert med fast pris efter RUT.',
+      },
+      { property: 'og:url', content: '/offert' },
     ],
-    links: [{ rel: "canonical", href: "/offert" }],
+    links: [{ rel: 'canonical', href: '/offert' }],
   }),
   component: Quote,
-});
+})
 
 const TJANSTER = [
-  ["hemstadning", "Hemstädning"],
-  ["veckostadning", "Veckostädning"],
-  ["manadsstadning", "Månadsstädning"],
-  ["storstadning", "Storstädning"],
-  ["flyttstadning", "Flyttstädning"],
-  ["fonsterputs", "Fönsterputs"],
-  ["kontorsstadning", "Kontorsstädning"],
-  ["annat", "Något annat"],
-] as const;
+  ['hemstadning', 'Hemstädning'],
+  ['veckostadning', 'Veckostädning'],
+  ['manadsstadning', 'Månadsstädning'],
+  ['storstadning', 'Storstädning'],
+  ['flyttstadning', 'Flyttstädning'],
+  ['fonsterputs', 'Fönsterputs'],
+  ['kontorsstadning', 'Kontorsstädning'],
+  ['annat', 'Något annat'],
+] as const
 
 function Quote() {
-  const [sent, setSent] = useState(false);
-  const [tjanst, setTjanst] = useState<string>("hemstadning");
+  const [sent, setSent] = useState(false)
+  const [tjanst, setTjanst] = useState<string>('hemstadning')
 
   return (
     <PageShell>
       <PageHeader
         eyebrow="Begär offert"
-        title={<>Fast pris, <em className="italic font-light text-primary">samma dag</em>.</>}
+        title={
+          <>
+            Fast pris,{' '}
+            <em className="italic font-light text-primary">samma dag</em>.
+          </>
+        }
         lead="Fyll i det du vet — vi återkommer med ett pris direkt eller bokar in ett kostnadsfritt hembesök om vi behöver se hemmet. Inga bindningstider, inga dolda kostnader."
       />
 
@@ -54,8 +66,15 @@ function Quote() {
             </div>
             <div className="bg-paper border border-line rounded-2xl p-6">
               <div className="eyebrow mb-3">Snabbare?</div>
-              <p className="text-sm text-ink-soft mb-4">Ring oss direkt under kontorstid — vi ger pris medan vi pratar.</p>
-              <a href="tel:+46700000000" className="btn-ghost w-full justify-center">070 — 000 00 00</a>
+              <p className="text-sm text-ink-soft mb-4">
+                Ring oss direkt under kontorstid — vi ger pris medan vi pratar.
+              </p>
+              <a
+                href="tel:+46700000000"
+                className="btn-ghost w-full justify-center"
+              >
+                070 — 000 00 00
+              </a>
             </div>
           </aside>
 
@@ -66,13 +85,22 @@ function Quote() {
                   <div className="eyebrow mb-4">Tack</div>
                   <h2 className="display-lg">Vi hör av oss inom dagen.</h2>
                   <p className="text-ink-soft mt-4 max-w-md mx-auto">
-                    Du får ett mejl med en bekräftelse direkt. Sedan ringer vi inom 24 timmar — oftast snabbare.
+                    Du får ett mejl med en bekräftelse direkt. Sedan ringer vi
+                    inom 24 timmar — oftast snabbare.
                   </p>
                 </div>
               ) : (
-                <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} className="grid gap-6">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    setSent(true)
+                  }}
+                  className="grid gap-6"
+                >
                   <div>
-                    <div className="text-sm text-ink-soft mb-2">Vilken tjänst gäller det?</div>
+                    <div className="text-sm text-ink-soft mb-2">
+                      Vilken tjänst gäller det?
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {TJANSTER.map(([id, label]) => (
                         <button
@@ -81,8 +109,8 @@ function Quote() {
                           onClick={() => setTjanst(id)}
                           className={`px-4 py-2 rounded-full border text-sm transition ${
                             tjanst === id
-                              ? "bg-ink text-background border-ink"
-                              : "border-line text-ink-soft hover:border-ink hover:text-ink"
+                              ? 'bg-ink text-background border-ink'
+                              : 'border-line text-ink-soft hover:border-ink hover:text-ink'
                           }`}
                         >
                           {label}
@@ -97,10 +125,18 @@ function Quote() {
                   </div>
 
                   <Field label="E-post" name="email" type="email" />
-                  <Field label="Adress" name="adress" placeholder="Gata och ort" />
+                  <Field
+                    label="Adress"
+                    name="adress"
+                    placeholder="Gata och ort"
+                  />
 
                   <div className="grid sm:grid-cols-2 gap-5">
-                    <Field label="Bostadens yta" name="yta" placeholder="t.ex. 95 m²" />
+                    <Field
+                      label="Bostadens yta"
+                      name="yta"
+                      placeholder="t.ex. 95 m²"
+                    />
                     <Field label="Önskat startdatum" name="datum" type="date" />
                   </div>
 
@@ -113,10 +149,15 @@ function Quote() {
 
                   <label className="flex items-start gap-3 text-sm text-ink-soft mt-2">
                     <input type="checkbox" required className="mt-1" />
-                    <span>Jag godkänner att Tinas Städ behandlar mina uppgifter för att återkomma med en offert.</span>
+                    <span>
+                      Jag godkänner att Tinas Städ behandlar mina uppgifter för
+                      att återkomma med en offert.
+                    </span>
                   </label>
 
-                  <button className="btn-primary self-start mt-2">Skicka förfrågan →</button>
+                  <button className="btn-primary self-start mt-2">
+                    Skicka förfrågan →
+                  </button>
                 </form>
               )}
             </div>
@@ -124,21 +165,49 @@ function Quote() {
         </div>
       </section>
     </PageShell>
-  );
+  )
 }
 
 function Field({
-  label, name, type = "text", required, textarea, placeholder,
-}: { label: string; name: string; type?: string; required?: boolean; textarea?: boolean; placeholder?: string }) {
-  const Cn = "w-full bg-background border border-line rounded-md px-4 py-3 text-base outline-none focus:border-ink transition";
+  label,
+  name,
+  type = 'text',
+  required,
+  textarea,
+  placeholder,
+}: {
+  label: string
+  name: string
+  type?: string
+  required?: boolean
+  textarea?: boolean
+  placeholder?: string
+}) {
+  const Cn =
+    'w-full bg-background border border-line rounded-md px-4 py-3 text-base outline-none focus:border-ink transition'
   return (
     <label className="block">
-      <span className="text-sm text-ink-soft block mb-1.5">{label}{required && <span className="text-primary"> *</span>}</span>
+      <span className="text-sm text-ink-soft block mb-1.5">
+        {label}
+        {required && <span className="text-primary"> *</span>}
+      </span>
       {textarea ? (
-        <textarea name={name} required={required} rows={5} className={Cn} placeholder={placeholder} />
+        <textarea
+          name={name}
+          required={required}
+          rows={5}
+          className={Cn}
+          placeholder={placeholder}
+        />
       ) : (
-        <input name={name} type={type} required={required} className={Cn} placeholder={placeholder} />
+        <input
+          name={name}
+          type={type}
+          required={required}
+          className={Cn}
+          placeholder={placeholder}
+        />
       )}
     </label>
-  );
+  )
 }
